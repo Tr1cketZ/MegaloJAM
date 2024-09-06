@@ -13,3 +13,12 @@ CREATE TABLE Livro (
     isbn VARCHAR(13) NOT NULL UNIQUE,
     numeroExemplares INT NOT NULL
 );
+
+INSERT INTO Usuario (nome, email, senha, role) 
+VALUES ('Viktor', 'viktor@email.com', 'senha123', 'admin');
+
+INSERT INTO Usuario (nome, email, senha, role) 
+VALUES ('Murilovsky', 'murilo@email.com', 'senha123', 'user');
+
+INSERT INTO Livro (titulo, autor, isbn, numeroExemplares) 
+VALUES ('O Senhor dos Anéis', 'J.R.R. Tolkien', '9780544003415', 10);
