@@ -25,3 +25,16 @@ function App() {
 }
 
 export default App;
+
+const connection = require('../config/database');
+
+
+connection.query('SELECT 1 + 1 AS solution', (err, results) => {
+  if (err) {
+    console.error('Erro na consulta:', err);
+  } else {
+    console.log('Resultado da consulta:', results[0].solution); // Deve mostrar 2
+  }
+});
+
+const connection = require('./config/database');
