@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, Redirect, useHistory } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
+
+// URL base do backend
+const BASE_URL = 'http://localhost:8080/api/users';
 
 // Componente de Login
 const Login = ({ setIsAuthenticated }) => {
@@ -10,24 +14,13 @@ const Login = ({ setIsAuthenticated }) => {
 
   const handleLogin = async () => {
     try {
-      // Substitua este código pelo seu código de autenticação com backend
-      // Exemplo:
-      // const response = await axios.post('/api/login', { username, password });
-      // if (response.data.success) {
-      //   setIsAuthenticated(true);
-      //   history.push('/');
-      // } else {
-      //   alert('Credenciais inválidas');
-      // }
-      // Simulação de resposta para desenvolvimento:
-      if (username === 'admin' && password === 'password') {
-        setIsAuthenticated(true);
-        history.push('/');
-      } else {
-        alert('Credenciais inválidas');
-      }
+      const response = await axios.post(`${BASE_URL}/login`, { username, password });
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      setIsAuthenticated(true);
+      history.push('/');
     } catch (error) {
-      alert('Erro ao fazer login');
+      alert('Credenciais inválidas ou erro ao fazer login');
     }
   };
 
@@ -69,11 +62,8 @@ const Cadastro = () => {
   const handleCadastro = async (e) => {
     e.preventDefault();
     try {
-      // Substitua este código pelo seu código de cadastro com backend
-      // Exemplo:
-      // await axios.post('/api/cadastro', { nome, username, password });
-      // alert('Cadastro realizado com sucesso!');
-      // Remover aviso de sucesso:
+      await axios.post(`${BASE_URL}/register`, { nome, username, password });
+      alert('Cadastro realizado com sucesso!');
     } catch (error) {
       alert('Erro ao cadastrar');
     }
@@ -133,7 +123,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
 );
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
   return (
     <Router>
@@ -175,4 +165,3 @@ function App() {
 }
 
 export default App;
-  
